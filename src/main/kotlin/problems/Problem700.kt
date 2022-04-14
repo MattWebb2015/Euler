@@ -6,13 +6,15 @@ class Problem700 : Problem<BigInteger>(
     problem = 700
 ) {
     override val input = rawInput
+    val eulermod = 4503599627370517L.toBigInteger()
+    val eulerquotient = 1504170715041707L.toBigInteger()
 
     override fun solveProblem(): BigInteger {
-        val coinbase = mutableSetOf<BigInteger>(1504170715041707L.toBigInteger())
+        val coinbase = mutableSetOf<BigInteger>(eulerquotient)
         var n = BigInteger.ONE
         var m = BigInteger.ONE
-        var modu = 4503599627370517L.toBigInteger()
-        val inverse = 1504170715041707.toBigInteger().modInverse(4503599627370517L.toBigInteger())
+        var modu = eulermod
+        val inverse = eulerquotient.modInverse(eulermod)
         while (eulercoins(n) != BigInteger.ZERO) {
             val i = eulercoins(n)
             if (i < coinbase.minByOrNull { it }!!) {
@@ -22,9 +24,9 @@ class Problem700 : Problem<BigInteger>(
             }
             n++
             if (i <= n) {
-                var ceiling = 4503599627370517L.toBigInteger()
+                var ceiling = eulermod
                 while (m < i) {
-                    modu = (inverse * m).mod(4503599627370517L.toBigInteger())
+                    modu = (inverse * m).mod(eulermod)
                     if (modu < ceiling) {
                         ceiling = modu
                         coinbase.add(m)
@@ -39,7 +41,7 @@ class Problem700 : Problem<BigInteger>(
     }
 
     private fun eulercoins(num: BigInteger): BigInteger {
-        return ((1504170715041707L.toBigInteger() * num).mod(4503599627370517L.toBigInteger()))
+        return ((eulerquotient * num).mod(eulermod))
     }
 
 }
